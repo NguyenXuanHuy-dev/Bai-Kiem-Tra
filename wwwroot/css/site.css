@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary-cobalt: #1e40af;
+    --primary-blue: #2563eb;
+    --primary-light: #eff6ff;
+    --bg-cream-slate: #f8fafc;
+    --text-dark: #0f172a;
+    --text-muted: #475569;
+    --border-color: #e2e8f0;
+    --radius-soft: 12px;
+    --radius-pill: 9999px;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-cream-slate);
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin-bottom: 80px;
+}
+
+/* Custom Navigation */
+.navbar-custom {
+    max-height: 80px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+/* Hero Section */
+.hero-wrapper {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.hero-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text-dark);
+}
+
+.hero-subtext {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 65ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Custom Cards */
+.course-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-soft);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.08);
+}
+
+.course-img-wrapper {
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+    background: #f1f5f9;
+}
+
+.course-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.course-card:hover .course-img {
+    transform: scale(1.04);
+}
+
+.course-img-placeholder {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Badge Styling */
+.badge-category {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: var(--primary-blue);
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    font-size: 0.75rem;
+}
+
+.badge-credits {
+    background-color: var(--primary-light);
+    color: var(--primary-blue);
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+/* Search Bar styling */
+.search-form {
+    border-radius: var(--radius-pill);
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.search-input {
+    border: none;
+    padding-left: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.search-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Beautiful custom buttons with micro-active click state */
+.btn-pill {
+    border-radius: var(--radius-pill);
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.btn-pill:active {
+    transform: scale(0.97);
+}
+
+.btn-primary-custom {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: #ffffff;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--primary-cobalt);
+    border-color: var(--primary-cobalt);
+    color: #ffffff;
+}
+
+/* Forms styling */
+.auth-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-soft);
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+}
+
+.form-floating > .form-control {
+    border-radius: var(--radius-soft);
+    border: 1px solid var(--border-color);
+}
+
+.form-floating > .form-control:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+/* Footer style */
+.footer-custom {
+    background-color: #ffffff;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+}

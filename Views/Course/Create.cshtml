@@ -1,0 +1,73 @@
+@model baitap.Models.Course
+
+@{
+    ViewData["Title"] = "Thêm học phần mới";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="mb-4">
+                <a asp-action="Index" class="text-decoration-none text-muted">
+                    <i class="bi bi-arrow-left"></i> Quay lại danh sách
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+                <div class="mb-4">
+                    <h2 class="fw-bold text-dark mb-1">Thêm Học Phần Mới</h2>
+                    <p class="text-muted">Điền đầy đủ thông tin để khởi tạo học phần đào tạo</p>
+                    <hr />
+                </div>
+
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label fw-semibold"></label>
+                        <input asp-for="Name" class="form-control form-control-lg rounded-3" placeholder="Nhập tên học phần..." />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Credits" class="form-label fw-semibold"></label>
+                            <input asp-for="Credits" class="form-control form-control-lg rounded-3" type="number" min="1" max="10" placeholder="Số tín chỉ..." />
+                            <span asp-validation-for="Credits" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CategoryId" class="form-label fw-semibold"></label>
+                            <select asp-for="CategoryId" class="form-select form-select-lg rounded-3" asp-items="ViewBag.CategoryId">
+                                <option value="">-- Chọn loại học phần --</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Lecturer" class="form-label fw-semibold"></label>
+                        <input asp-for="Lecturer" class="form-control form-control-lg rounded-3" placeholder="Tên giảng viên giảng dạy..." />
+                        <span asp-validation-for="Lecturer" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Hình ảnh minh họa</label>
+                        <input type="file" name="imageFile" class="form-control rounded-3" accept="image/*" />
+                        <small class="form-text text-muted">Hỗ trợ các định dạng: .jpg, .png, .jpeg. Nếu để trống, hệ thống sẽ sử dụng ảnh mặc định.</small>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                            <i class="bi bi-check-circle-fill"></i> Tạo học phần
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

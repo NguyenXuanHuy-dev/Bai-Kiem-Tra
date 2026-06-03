@@ -1,0 +1,128 @@
+@model PaginatedList<baitap.Models.Course>
+@{
+    ViewData["Title"] = "Trang chủ - Danh sách học phần";
+    var enrolledIds = ViewBag.EnrolledCourseIds as List<int> ?? new List<int>();
+}
+
+<div class="container">
+    <!-- Hero Section -->
+    <div class="text-center hero-wrapper mb-5">
+        <h1 class="hero-title mb-3">Hệ Thống Đăng Ký Học Phần</h1>
+        <p class="hero-subtext mb-4">Tra cứu và quản lý các học phần đào tạo của sinh viên một cách trực quan và hiệu quả</p>
+
+        <!-- Search Bar -->
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <form asp-action="Index" method="get" class="search-form bg-white">
+                    <input type="text" name="searchString" class="form-control search-input flex-grow-1" placeholder="Nhập tên học phần..." value="@ViewData["CurrentFilter"]" aria-label="Tìm kiếm học phần" />
+                    <button type="submit" class="btn btn-primary btn-pill px-4 ms-2">
+                        <i class="bi bi-search me-1"></i> Tìm kiếm
+                    </button>
+                </form>
+                @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"] as string))
+                {
+                    <div class="mt-3 text-center">
+                        <span class="text-muted small">Đang hiển thị kết quả cho: <strong>"@ViewData["CurrentFilter"]"</strong></span>
+                        <a asp-action="Index" class="text-decoration-none text-danger small ms-2"><i class="bi bi-x-circle"></i> Xóa</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Cards Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 course-card">
+                    <div class="course-img-wrapper">
+                        @if (!string.IsNullOrEmpty(item.Image))
+                        {
+                            <img src="@item.Image" class="course-img" alt="@item.Name" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60'" />
+                        }
+                        else
+                        {
+                            <div class="course-img-placeholder">
+                                <span>@item.Name</span>
+                            </div>
+                        }
+                        <span class="position-absolute top-0 end-0 m-3 badge badge-category">@item.Category?.Name</span>
+                    </div>
+                    
+                    <div class="card-body d-flex flex-column p-4">
+                        <h5 class="card-title fw-bold text-dark mb-3">@item.Name</h5>
+                        
+                        <div class="mt-auto">
+                            <!-- Chức năng Đăng ký học phần -->
+                            @if (User.Identity != null && User.Identity.IsAuthenticated && (User.IsInRole("STUDENT") || User.IsInRole("Student")))
+                            {
+                                <div class="mb-3 d-grid">
+                                    @if (enrolledIds.Contains(item.Id))
+                                    {
+                                        <form asp-controller="Enroll" asp-action="CancelCourse" method="post">
+                                            <input type="hidden" name="courseId" value="@item.Id" />
+                                            <input type="hidden" name="redirectUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                                            <button type="submit" class="btn btn-outline-danger btn-pill w-100">
+                                                <i class="bi bi-x-circle-fill me-1"></i> Hủy đăng ký
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-controller="Enroll" asp-action="EnrollCourse" method="post">
+                                            <input type="hidden" name="courseId" value="@item.Id" />
+                                            <button type="submit" class="btn btn-primary btn-pill w-100">
+                                                <i class="bi bi-plus-circle-fill me-1"></i> Đăng ký học
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            }
+
+                            <div class="pt-3 border-top d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Giảng viên</small>
+                                    <span class="fw-semibold text-secondary small">@item.Lecturer</span>
+                                </div>
+                                <div class="text-end">
+                                    <small class="text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Số tín chỉ</small>
+                                    <span class="badge badge-credits">@item.Credits Tín chỉ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Phân trang -->
+    @if (Model.TotalPages > 1)
+    {
+        <div class="d-flex justify-content-center mt-5">
+            <nav aria-label="Page navigation">
+                <ul class="pagination gap-1">
+                    <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                        <a class="page-link btn-pill border-0 px-3 py-2" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-searchString="@ViewData["CurrentFilter"]">
+                            <i class="bi bi-chevron-left"></i> Trước
+                        </a>
+                    </li>
+                    
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                            <a class="page-link btn-pill border-0 px-3 py-2" asp-action="Index" asp-route-pageNumber="@i" asp-route-searchString="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                        <a class="page-link btn-pill border-0 px-3 py-2" asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-searchString="@ViewData["CurrentFilter"]">
+                            Sau <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+</div>

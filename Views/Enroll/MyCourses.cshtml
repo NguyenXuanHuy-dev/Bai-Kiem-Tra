@@ -1,0 +1,73 @@
+@model IEnumerable<baitap.Models.Course>
+@{
+    ViewData["Title"] = "Học phần của tôi";
+}
+
+<div class="container py-4">
+    <div class="mb-4 text-center text-sm-start">
+        <h1 class="h2 fw-bold text-dark mb-1">Học Phần Đã Đăng Ký</h1>
+        <p class="text-muted">Danh sách các học phần bạn đã đăng ký tham gia trong học kỳ này</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5 bg-white rounded-3 shadow-sm border border-light">
+            <div class="mb-4">
+                <i class="bi bi-journal-x display-3 text-muted"></i>
+            </div>
+            <h4 class="fw-bold text-dark mb-2">Chưa Đăng Ký Học Phần Nào</h4>
+            <p class="text-muted mb-4">Bạn chưa đăng ký bất kỳ học phần nào cho học kỳ hiện tại.</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-pill shadow-sm px-4">
+                Khám phá học phần
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 course-card">
+                        <div class="course-img-wrapper">
+                            @if (!string.IsNullOrEmpty(item.Image))
+                            {
+                                <img src="@item.Image" class="course-img" alt="@item.Name" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60'" />
+                            }
+                            else
+                            {
+                                <div class="course-img-placeholder">
+                                    <span>@item.Name</span>
+                                </div>
+                            }
+                            <span class="position-absolute top-0 end-0 m-3 badge badge-category">@item.Category?.Name</span>
+                        </div>
+                        
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title fw-bold text-dark mb-3">@item.Name</h5>
+                            
+                            <div class="border-top pt-3 mb-4 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Giảng viên</small>
+                                    <span class="fw-semibold text-secondary small">@item.Lecturer</span>
+                                </div>
+                                <div class="text-end">
+                                    <small class="text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Số tín chỉ</small>
+                                    <span class="badge badge-credits">@item.Credits Tín chỉ</span>
+                                </div>
+                            </div>
+
+                            <form asp-controller="Enroll" asp-action="CancelCourse" method="post" class="mt-auto d-grid">
+                                <input type="hidden" name="courseId" value="@item.Id" />
+                                <input type="hidden" name="redirectUrl" value="@Context.Request.Path" />
+                                <button type="submit" class="btn btn-outline-danger btn-pill">
+                                    <i class="bi bi-x-circle me-1"></i> Hủy đăng ký
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
